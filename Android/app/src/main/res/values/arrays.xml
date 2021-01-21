@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="emisor">
-        <item>Nadie</item>
+        <item>Seleccionar Nombre</item>
         <item>Facundo</item>
         <item>Lautaro</item>
         <item>Luciano</item>
@@ -13,6 +13,7 @@
     </string-array>
 
     <string-array name="receptor">
+        <item>Seleccionar Nombre</item>
         <item>Todos</item>
         <item>Facundo</item>
         <item>Lautaro</item>
@@ -25,6 +26,7 @@
     </string-array>
 
     <string-array name="categoria">
+        <item>Seleccionar Categoría</item>
         <item>Alojamiento</item>
         <item>Transporte</item>
         <item>Alimentos</item>
