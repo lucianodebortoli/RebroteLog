@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RebroteLog</string>
+    <string name="motivo_default">Escribir detalle simple</string>
 </resources>

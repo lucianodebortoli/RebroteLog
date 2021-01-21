@@ -1,8 +1,13 @@
 package org.luciano.rebrotelog
+import android.content.Context
 import android.opengl.Visibility
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethod
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.*
@@ -11,7 +16,8 @@ import java.io.IOException
 class MainActivity : AppCompatActivity() {
 
     // Activity:
-    private var TAG = "RebroteTAG"
+    private var TAG = "Rebrote_TAG"
+    private lateinit var mainLayout: View
     private lateinit var emisorSpinner: Spinner
     private lateinit var montoEdit: EditText
     private lateinit var receptorSpinner: Spinner
@@ -25,24 +31,34 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tv4: TextView
     private lateinit var tv5: TextView
 
-    // Dynamic Variables:
+    // Declare Dynamic Variables:
     private var currentMonto: Int = 0
-    private lateinit var currentEmisor: String
-    private lateinit var currentReceptor: String
-    private lateinit var currentCategoria: String
-    private lateinit var currentMotivo: String
+    private var currentEmisor: String = "Seleccionar"
+    private var currentReceptor: String = "Seleccionar"
+    private var currentCategoria: String = "Seleccionar"
+    private var currentMotivo: String= "Seleccionar"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         findViews()
+        initLayout()
         initSpinners()
         initEditTexts()
         initButtons()
         hideAll()
     }
 
+    private fun initLayout() {
+        mainLayout.setOnClickListener{
+            //window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            val inputMethodManager: InputMethodManager = mainLayout.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(mainLayout.windowToken,0)
+        }
+    }
+
     private fun findViews() {
+        mainLayout = findViewById(R.id.main_layout)
         emisorSpinner = findViewById(R.id.emisor_spinner)
         montoEdit = findViewById(R.id.monto_edit)
         receptorSpinner = findViewById(R.id.receptor_spinner)
@@ -67,10 +83,13 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
-                if (itemSelected == "Seleccionar Nombre") {
+                if (itemSelected == "Seleccionar") {
                     makeToast("Seleccionar nombre válido")
+                    tv1.setTextColor(resources.getColor(R.color.colorError))
                 } else {
                     currentEmisor = itemSelected
+                    nuevoButton.isEnabled=true
+                    tv1.setTextColor(resources.getColor(R.color.colorCorrect))
                 }
             }
         }
@@ -84,10 +103,13 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) { }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
-                if (itemSelected == "Seleccionar Nombre") {
+                if (itemSelected == "Seleccionar") {
                     makeToast("Seleccionar nombre válido")
+                    tv3.setTextColor(resources.getColor(R.color.colorError))
                 } else {
                     currentReceptor = itemSelected
+                    nuevoButton.isEnabled=true
+                    tv3.setTextColor(resources.getColor(R.color.colorCorrect))
                 }
             }
         }
@@ -101,10 +123,13 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) { }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
-                if (itemSelected == "Seleccionar Categoría") {
+                if (itemSelected == "Seleccionar") {
                     makeToast("Seleccionar categoría válida")
+                    tv4.setTextColor(resources.getColor(R.color.colorError))
                 } else {
                     currentCategoria = itemSelected
+                    nuevoButton.isEnabled=true
+                    tv4.setTextColor(resources.getColor(R.color.colorCorrect))
                 }
             }
         }
@@ -114,12 +139,28 @@ class MainActivity : AppCompatActivity() {
         // Monto Edit:
         montoEdit.setOnClickListener {
             val input: String = montoEdit.text.toString()
-            currentMonto = input.toInt()
+            if (input == "0" || input == ""){
+                makeToast("Ingresar un monto válido")
+                tv2.setTextColor(resources.getColor(R.color.colorError))
+            }
+            else {
+                currentMonto = input.toInt()
+                registrarButton.isEnabled=true
+                tv2.setTextColor(resources.getColor(R.color.colorCorrect))
+            }
         }
 
         // Motivo Edit:
         motivoEdit.setOnClickListener {
-            currentMotivo = motivoEdit.text.toString()
+            val input = motivoEdit.text.toString()
+            if (input==resources.getString(R.string.motivo_default)){
+                makeToast("Ingresar un motivo válido")
+                tv5.setTextColor(resources.getColor(R.color.colorError))
+            } else{
+                currentMotivo = input
+                registrarButton.isEnabled=true
+                tv5.setTextColor(resources.getColor(R.color.colorCorrect))
+            }
         }
     }
 
@@ -132,17 +173,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun newRegisterClicked() {
-        emisorSpinner.setSelection(0)
+        //emisorSpinner.setSelection(0)
         montoEdit.setText("0")
         receptorSpinner.setSelection(0)
         categoriaSpinner.setSelection(0)
-        motivoEdit.setText("Escribir detalle simple")
+        motivoEdit.setText(resources.getString(R.string.motivo_default))
         showAll()
+        nuevoButton.isEnabled=false
     }
 
     private fun registerClicked() {
         // TODO: logica para hacer multiples logs si se hace a "todos".
-        submitRegister(currentEmisor, currentReceptor, currentMonto, currentCategoria, currentMotivo)
+        validateQuery()
+        registrarButton.isEnabled=false
+    }
+
+    private fun validateQuery() {
+
+        if (currentEmisor=="Seleccionar" ||
+            currentCategoria=="Seleccionar" ||
+            currentReceptor=="Seleccionar" ||
+            currentMotivo == resources.getString(R.string.motivo_default) ||
+            currentMonto==0) {
+            makeToast("Faltan completar campos")
+        } else  {
+            submitRegister(currentEmisor, currentReceptor, currentMonto, currentCategoria, currentMotivo)
+        }
     }
 
     private fun submitRegister(emisor: String, receptor: String, monto: Int, categoria: String, motivo: String)
@@ -154,11 +210,15 @@ class MainActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object: Callback{
             override fun onResponse(call: Call, response: Response) {
                 Log.i(TAG, "Sent a GET request")
-                makeToast("Registrado correctamente!")
+                runOnUiThread{
+                    makeToast("Registrado correctamente!")
+                }
             }
             override fun onFailure(call: Call, e: IOException) {
                 Log.i(TAG, "Failed to send GET request")
-                makeToast("Error al registrar")
+                runOnUiThread{
+                    makeToast("ERROR al enviar registro")
+                }
             }
         })
     }
@@ -193,6 +253,11 @@ class MainActivity : AppCompatActivity() {
         tv3.visibility = View.VISIBLE
         tv4.visibility = View.VISIBLE
         tv5.visibility = View.VISIBLE
+        tv1.setTextColor(resources.getColor(R.color.colorNeutral))
+        tv2.setTextColor(resources.getColor(R.color.colorNeutral))
+        tv3.setTextColor(resources.getColor(R.color.colorNeutral))
+        tv4.setTextColor(resources.getColor(R.color.colorNeutral))
+        tv5.setTextColor(resources.getColor(R.color.colorNeutral))
     }
 
     private fun showLastLog(){
