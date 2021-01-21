@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="emisor">
+        <item>Nadie</item>
+        <item>Facundo</item>
+        <item>Lautaro</item>
+        <item>Luciano</item>
+        <item>Natacha</item>
+        <item>Nicolas</item>
+        <item>Paloma</item>
+        <item>Rocio</item>
+        <item>Martin</item>
+    </string-array>
+
+    <string-array name="receptor">
+        <item>Todos</item>
+        <item>Facundo</item>
+        <item>Lautaro</item>
+        <item>Luciano</item>
+        <item>Natacha</item>
+        <item>Nicolas</item>
+        <item>Paloma</item>
+        <item>Rocio</item>
+        <item>Martin</item>
+    </string-array>
+
+    <string-array name="categoria">
+        <item>Alojamiento</item>
+        <item>Transporte</item>
+        <item>Alimentos</item>
+        <item>Otros</item>
+    </string-array>
+
+</resources>
