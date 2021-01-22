@@ -1,17 +1,16 @@
 package org.luciano.rebrotelog
 import android.content.Context
-import android.opengl.Visibility
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.text.Layout
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
-import android.view.inputmethod.InputMethod
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.*
 import java.io.IOException
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var motivoEdit: EditText
     private lateinit var registrarButton: Button
     private lateinit var nuevoButton: Button
+    private lateinit var sheets_button: Button
     private lateinit var tv1: TextView
     private lateinit var tv2: TextView
     private lateinit var tv3: TextView
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         motivoEdit = findViewById(R.id.motivo_edit)
         registrarButton = findViewById(R.id.registrar_button)
         nuevoButton = findViewById(R.id.nuevo_button)
+        sheets_button = findViewById(R.id.sheets_button)
         tv1 = findViewById(R.id.tv1)
         tv2 = findViewById(R.id.tv2)
         tv3 = findViewById(R.id.tv3)
@@ -85,7 +86,6 @@ class MainActivity : AppCompatActivity() {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
                 if (itemSelected == "Seleccionar") {
                     makeToast("Seleccionar nombre válido")
-                    tv1.setTextColor(resources.getColor(R.color.colorError))
                 } else {
                     currentEmisor = itemSelected
                     nuevoButton.isEnabled=true
@@ -105,7 +105,6 @@ class MainActivity : AppCompatActivity() {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
                 if (itemSelected == "Seleccionar") {
                     makeToast("Seleccionar nombre válido")
-                    tv3.setTextColor(resources.getColor(R.color.colorError))
                 } else {
                     currentReceptor = itemSelected
                     nuevoButton.isEnabled=true
@@ -125,7 +124,6 @@ class MainActivity : AppCompatActivity() {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
                 if (itemSelected == "Seleccionar") {
                     makeToast("Seleccionar categoría válida")
-                    tv4.setTextColor(resources.getColor(R.color.colorError))
                 } else {
                     currentCategoria = itemSelected
                     nuevoButton.isEnabled=true
@@ -170,15 +168,19 @@ class MainActivity : AppCompatActivity() {
 
         // Registrar:
         registrarButton.setOnClickListener{ registerClicked() }
+
+        // Sheets:
+        sheets_button.setOnClickListener{ goToSheets() }
     }
 
     private fun newRegisterClicked() {
-        //emisorSpinner.setSelection(0)
+        emisorSpinner.setSelection(0)
         montoEdit.setText("0")
         receptorSpinner.setSelection(0)
         categoriaSpinner.setSelection(0)
         motivoEdit.setText(resources.getString(R.string.motivo_default))
         showAll()
+        resetColors()
         nuevoButton.isEnabled=false
     }
 
@@ -234,6 +236,7 @@ class MainActivity : AppCompatActivity() {
         categoriaSpinner.visibility = View.INVISIBLE
         motivoEdit.visibility = View.INVISIBLE
         registrarButton.visibility = View.INVISIBLE
+        sheets_button.visibility = View.INVISIBLE
         tv1.visibility = View.INVISIBLE
         tv2.visibility = View.INVISIBLE
         tv3.visibility = View.INVISIBLE
@@ -248,16 +251,27 @@ class MainActivity : AppCompatActivity() {
         categoriaSpinner.visibility = View.VISIBLE
         motivoEdit.visibility = View.VISIBLE
         registrarButton.visibility = View.VISIBLE
+        sheets_button.visibility = View.VISIBLE
         tv1.visibility = View.VISIBLE
         tv2.visibility = View.VISIBLE
         tv3.visibility = View.VISIBLE
         tv4.visibility = View.VISIBLE
         tv5.visibility = View.VISIBLE
+        nuevoButton.text = "LIMPIAR"
+    }
+
+    private fun resetColors(){
         tv1.setTextColor(resources.getColor(R.color.colorNeutral))
         tv2.setTextColor(resources.getColor(R.color.colorNeutral))
         tv3.setTextColor(resources.getColor(R.color.colorNeutral))
         tv4.setTextColor(resources.getColor(R.color.colorNeutral))
         tv5.setTextColor(resources.getColor(R.color.colorNeutral))
+    }
+
+    private fun goToSheets(){
+        val url: String = "https://docs.google.com/spreadsheets/d/1u8hsgUbM8guJzTgguBTd5NeYh-m_1MNTzEzJUTICcBk/edit#gid=1041806097"
+        intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     private fun showLastLog(){
