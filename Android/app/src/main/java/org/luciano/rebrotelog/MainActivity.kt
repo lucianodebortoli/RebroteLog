@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import okhttp3.*
 import java.io.IOException
 
-
 class MainActivity : AppCompatActivity() {
 
     // Activity:
@@ -185,30 +184,51 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun registerClicked() {
-        // TODO: logica para hacer multiples logs si se hace a "todos".
-        validateQuery()
+        if (currentReceptor=="Todos") {
+            // Multiple Register:
+            val receptors: MutableList<String> = resources.getStringArray(R.array.receptor).toMutableList()
+            receptors.removeAt(1)
+            receptors.removeAt(0)
+            val totalUsers = receptors.size
+            currentMonto /= totalUsers
+            receptors.forEach {
+                currentReceptor = it
+                submitRequest()
+                Thread.sleep(1000)
+            }
+        } else {
+            // Single Register:
+            submitRequest()
+        }
         registrarButton.isEnabled=false
     }
 
-    private fun validateQuery() {
+    private fun submitRequest() {
+        if (isValidRequest()){
+            sendRequest(currentEmisor, currentReceptor, currentMonto, currentCategoria, currentMotivo)
+        }
+    }
 
+    private fun isValidRequest(): Boolean {
         if (currentEmisor=="Seleccionar" ||
             currentCategoria=="Seleccionar" ||
             currentReceptor=="Seleccionar" ||
             currentMotivo == resources.getString(R.string.motivo_default) ||
             currentMonto==0) {
             makeToast("Faltan completar campos")
-        } else  {
-            submitRegister(currentEmisor, currentReceptor, currentMonto, currentCategoria, currentMotivo)
+            return false
+        } else {
+            return true
         }
     }
 
-    private fun submitRegister(emisor: String, receptor: String, monto: Int, categoria: String, motivo: String)
+    private fun sendRequest(emisor: String, receptor: String, monto: Int, categoria: String, motivo: String)
     {
         val url = "https://script.google.com/macros/s/AKfycbyRKdBzm3WBNfp0c9J7oJyTlKmCQNIuR548dHRCX86lcaTSMEs_j-nwyA/exec"
         val requestURL = url+"?emisor="+emisor+"&receptor="+receptor+"&monto="+monto+"&categoria="+categoria+"&motivo="+motivo
         val request = Request.Builder().url(requestURL).build()
         val client = OkHttpClient()
+        Log.i(TAG, "RequestURL: $requestURL")
         client.newCall(request).enqueue(object: Callback{
             override fun onResponse(call: Call, response: Response) {
                 Log.i(TAG, "Sent a GET request")
@@ -272,10 +292,6 @@ class MainActivity : AppCompatActivity() {
         val url: String = "https://docs.google.com/spreadsheets/d/1u8hsgUbM8guJzTgguBTd5NeYh-m_1MNTzEzJUTICcBk/edit#gid=1041806097"
         intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)
-    }
-
-    private fun showLastLog(){
-        //TODO: mostrar el ultimo elemento loggeado.
     }
 
 }
