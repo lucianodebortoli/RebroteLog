@@ -10,6 +10,7 @@
         <item>Paloma</item>
         <item>Rocio</item>
         <item>Martin</item>
+        <item>Silvina</item>
     </string-array>
 
     <string-array name="receptor">
@@ -23,6 +24,7 @@
         <item>Paloma</item>
         <item>Rocio</item>
         <item>Martin</item>
+        <item>Silvina</item>
     </string-array>
 
     <string-array name="categoria">
