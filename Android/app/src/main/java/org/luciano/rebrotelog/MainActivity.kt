@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
     private fun initSpinners() {
         // Emisor Spinner:
         val emisorAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
-            this, R.array.emisor, android.R.layout.simple_spinner_item)
+            this, R.array.emitter, android.R.layout.simple_spinner_item)
         emisorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         emisorSpinner.adapter = emisorAdapter
         emisorSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
 
         // Categoría Spinner:
         val categoriaAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
-            this, R.array.categoria, android.R.layout.simple_spinner_item)
+            this, R.array.category, android.R.layout.simple_spinner_item)
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categoriaSpinner.adapter = categoriaAdapter
         categoriaSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
@@ -230,10 +230,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendRequest(emisor: String, receptor: String, monto: Int, categoria: String, motivo: String)
+    private fun sendRequest(emitter: String, receptor: String, amount: Int, category: String, detail: String)
     {
-        val url = "https://script.google.com/macros/s/AKfycbyRKdBzm3WBNfp0c9J7oJyTlKmCQNIuR548dHRCX86lcaTSMEs_j-nwyA/exec"
-        val requestURL = url+"?emisor="+emisor+"&receptor="+receptor+"&monto="+monto+"&categoria="+categoria+"&motivo="+motivo
+        val url = ""
+        val requestURL = url+"?emisor="+emitter+"&receptor="+receptor+"&monto="+amount+"&categoria="+category+"&motivo="+detail
         val request = Request.Builder().url(requestURL).build()
         val client = OkHttpClient()
         Log.i(TAG, "RequestURL: $requestURL")

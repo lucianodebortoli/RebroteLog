@@ -1,39 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="emisor">
+    <string-array name="emitter">
         <item>Select</item>
-        <item>Facundo</item>
-        <item>Lautaro</item>
-        <item>Luciano</item>
-        <item>Natacha</item>
-        <item>Nicolas</item>
-        <item>Paloma</item>
-        <item>Rocio</item>
-        <item>Martin</item>
-        <item>Silvina</item>
+        <item>User1</item>
+        <item>User2</item>
+        <item>User3</item>
     </string-array>
 
     <string-array name="receptor">
         <item>Select</item>
-        <item>Todos</item>
-        <item>Facundo</item>
-        <item>Lautaro</item>
-        <item>Luciano</item>
-        <item>Natacha</item>
-        <item>Nicolas</item>
-        <item>Paloma</item>
-        <item>Rocio</item>
-        <item>Martin</item>
-        <item>Silvina</item>
+        <item>All</item>
+        <item>User1</item>
+        <item>User2</item>
+        <item>User3</item>
     </string-array>
 
-    <string-array name="categoria">
+    <string-array name="category">
         <item>Select</item>
-        <item>Prueba</item>
-        <item>Alojamiento</item>
-        <item>Transporte</item>
-        <item>Alimentos</item>
-        <item>Otros</item>
+        <item>Test</item>
+        <item>Category1</item>
+        <item>Category2</item>
+        <item>Category3</item>
     </string-array>
-
 </resources>
