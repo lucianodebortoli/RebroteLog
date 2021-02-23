@@ -1,4 +1,4 @@
-package org.luciano.rebrotelog
+package org.luciano.splitlog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -14,7 +14,7 @@ import java.io.IOException
 class MainActivity : AppCompatActivity() {
 
     // Activity:
-    private var TAG = "Rebrote_TAG"
+    private var TAG = "TAG"
     private lateinit var mainLayout: View
     private lateinit var emisorSpinner: Spinner
     private lateinit var montoEdit: EditText
