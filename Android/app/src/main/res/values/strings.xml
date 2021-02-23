@@ -1,4 +1,13 @@
 <resources>
-    <string name="app_name">RebroteLog</string>
-    <string name="motivo_default">Escribir detalle simple</string>
+    <string name="app_name">SplitLog</string>
+    <string name="motive_default">Write detail</string>
+    <string name="select">Select</string>
+    <string name="valid_name">Select valid name</string>
+    <string name="valid_category">Select valid category</string>
+    <string name="valid_amount">Enter valid amount</string>
+    <string name="valid_detail">Enter valid detail</string>
+    <string name="all">All</string>
+    <string name="missing_fields">Missing fields</string>
+    <string name="registered_successfully">Registered successfully</string>
+    <string name="clean">CLEAN</string>
 </resources>

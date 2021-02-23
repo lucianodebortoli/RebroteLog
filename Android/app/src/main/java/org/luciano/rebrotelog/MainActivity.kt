@@ -32,25 +32,33 @@ class MainActivity : AppCompatActivity() {
 
     // Declare Dynamic Variables:
     private var currentMonto: Int = 0
-    private var currentEmisor: String = "Seleccionar"
-    private var currentReceptor: String = "Seleccionar"
-    private var currentCategoria: String = "Seleccionar"
-    private var currentMotivo: String= "Seleccionar"
+    private lateinit var currentEmisor: String
+    private lateinit var currentReceptor: String
+    private lateinit var currentCategoria: String
+    private lateinit var currentMotivo: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         findViews()
         initLayout()
+        initVars()
         initSpinners()
         initEditTexts()
         initButtons()
         hideAll()
     }
 
+    private fun initVars() {
+        currentMonto= 0
+        currentEmisor= getString(R.string.select)
+        currentReceptor= getString(R.string.select)
+        currentCategoria= getString(R.string.select)
+        currentMotivo= getString(R.string.select)
+    }
+
     private fun initLayout() {
         mainLayout.setOnClickListener{
-            //window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             val inputMethodManager: InputMethodManager = mainLayout.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(mainLayout.windowToken,0)
         }
@@ -83,8 +91,8 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
-                if (itemSelected == "Seleccionar") {
-                    makeToast("Seleccionar nombre válido")
+                if (itemSelected == getString(R.string.select)) {
+                    makeToast(getString(R.string.valid_name))
                 } else {
                     currentEmisor = itemSelected
                     nuevoButton.isEnabled=true
@@ -102,8 +110,8 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) { }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
-                if (itemSelected == "Seleccionar") {
-                    makeToast("Seleccionar nombre válido")
+                if (itemSelected == getString(R.string.select)) {
+                    makeToast(getString(R.string.valid_name))
                 } else {
                     currentReceptor = itemSelected
                     nuevoButton.isEnabled=true
@@ -121,8 +129,8 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) { }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
-                if (itemSelected == "Seleccionar") {
-                    makeToast("Seleccionar categoría válida")
+                if (itemSelected == getString(R.string.select)) {
+                    makeToast(getString(R.string.valid_category))
                 } else {
                     currentCategoria = itemSelected
                     nuevoButton.isEnabled=true
@@ -137,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         montoEdit.setOnClickListener {
             val input: String = montoEdit.text.toString()
             if (input == "0" || input == ""){
-                makeToast("Ingresar un monto válido")
+                makeToast(getString(R.string.valid_amount))
                 tv2.setTextColor(resources.getColor(R.color.colorError))
             }
             else {
@@ -150,8 +158,8 @@ class MainActivity : AppCompatActivity() {
         // Motivo Edit:
         motivoEdit.setOnClickListener {
             val input = motivoEdit.text.toString()
-            if (input==resources.getString(R.string.motivo_default)){
-                makeToast("Ingresar un motivo válido")
+            if (input==resources.getString(R.string.motive_default)){
+                makeToast(getString(R.string.valid_detail))
                 tv5.setTextColor(resources.getColor(R.color.colorError))
             } else{
                 currentMotivo = input
@@ -162,7 +170,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initButtons() {
-        // Iniciar nuevo registro:
+        // new register:
         nuevoButton.setOnClickListener{ newRegisterClicked() }
 
         // Registrar:
@@ -177,14 +185,14 @@ class MainActivity : AppCompatActivity() {
         montoEdit.setText("0")
         receptorSpinner.setSelection(0)
         categoriaSpinner.setSelection(0)
-        motivoEdit.setText(resources.getString(R.string.motivo_default))
+        motivoEdit.setText(resources.getString(R.string.motive_default))
         showAll()
         resetColors()
         nuevoButton.isEnabled=false
     }
 
     private fun registerClicked() {
-        if (currentReceptor=="Todos") {
+        if (currentReceptor==getString(R.string.all)) {
             // Multiple Register:
             val receptors: MutableList<String> = resources.getStringArray(R.array.receptor).toMutableList()
             receptors.removeAt(1)
@@ -210,12 +218,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun isValidRequest(): Boolean {
-        if (currentEmisor=="Seleccionar" ||
-            currentCategoria=="Seleccionar" ||
-            currentReceptor=="Seleccionar" ||
-            currentMotivo == resources.getString(R.string.motivo_default) ||
+        if (currentEmisor==getString(R.string.select) ||
+            currentCategoria==getString(R.string.select) ||
+            currentReceptor==getString(R.string.select) ||
+            currentMotivo == resources.getString(R.string.motive_default) ||
             currentMonto==0) {
-            makeToast("Faltan completar campos")
+            makeToast(getString(R.string.missing_fields))
             return false
         } else {
             return true
@@ -233,13 +241,13 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 Log.i(TAG, "Sent a GET request")
                 runOnUiThread{
-                    makeToast("Registrado correctamente!")
+                    makeToast(getString(R.string.registered_successfully))
                 }
             }
             override fun onFailure(call: Call, e: IOException) {
                 Log.i(TAG, "Failed to send GET request")
                 runOnUiThread{
-                    makeToast("ERROR al enviar registro")
+                    makeToast("ERROR while uploading")
                 }
             }
         })
@@ -277,7 +285,7 @@ class MainActivity : AppCompatActivity() {
         tv3.visibility = View.VISIBLE
         tv4.visibility = View.VISIBLE
         tv5.visibility = View.VISIBLE
-        nuevoButton.text = "LIMPIAR"
+        nuevoButton.text = getString(R.string.clean)
     }
 
     private fun resetColors(){
@@ -289,7 +297,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToSheets(){
-        val url: String = "https://docs.google.com/spreadsheets/d/1u8hsgUbM8guJzTgguBTd5NeYh-m_1MNTzEzJUTICcBk/edit#gid=1041806097"
+        val url = "https://docs.google.com/spreadsheets/d/1u8hsgUbM8guJzTgguBTd5NeYh-m_1MNTzEzJUTICcBk/edit#gid=1041806097"
         intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)
     }
