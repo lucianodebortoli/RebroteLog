@@ -1,2 +1,2 @@
-# RebroteLog
+# SplitLog
 App para anotar gastos
