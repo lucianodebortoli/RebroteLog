@@ -16,14 +16,14 @@ class MainActivity : AppCompatActivity() {
     // Activity:
     private var TAG = "TAG"
     private lateinit var mainLayout: View
-    private lateinit var emisorSpinner: Spinner
-    private lateinit var montoEdit: EditText
+    private lateinit var emitterSpinner: Spinner
+    private lateinit var amountEdit: EditText
     private lateinit var receptorSpinner: Spinner
-    private lateinit var categoriaSpinner: Spinner
-    private lateinit var motivoEdit: EditText
-    private lateinit var registrarButton: Button
-    private lateinit var nuevoButton: Button
-    private lateinit var sheets_button: Button
+    private lateinit var categorySpinner: Spinner
+    private lateinit var detailEdit: EditText
+    private lateinit var registerButton: Button
+    private lateinit var newButton: Button
+    private lateinit var sheetsButton: Button
     private lateinit var tv1: TextView
     private lateinit var tv2: TextView
     private lateinit var tv3: TextView
@@ -66,14 +66,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun findViews() {
         mainLayout = findViewById(R.id.main_layout)
-        emisorSpinner = findViewById(R.id.emisor_spinner)
-        montoEdit = findViewById(R.id.monto_edit)
+        emitterSpinner = findViewById(R.id.emisor_spinner)
+        amountEdit = findViewById(R.id.monto_edit)
         receptorSpinner = findViewById(R.id.receptor_spinner)
-        categoriaSpinner = findViewById(R.id.categoria_spinner)
-        motivoEdit = findViewById(R.id.motivo_edit)
-        registrarButton = findViewById(R.id.registrar_button)
-        nuevoButton = findViewById(R.id.nuevo_button)
-        sheets_button = findViewById(R.id.sheets_button)
+        categorySpinner = findViewById(R.id.categoria_spinner)
+        detailEdit = findViewById(R.id.motivo_edit)
+        registerButton = findViewById(R.id.registrar_button)
+        newButton = findViewById(R.id.nuevo_button)
+        sheetsButton = findViewById(R.id.sheets_button)
         tv1 = findViewById(R.id.tv1)
         tv2 = findViewById(R.id.tv2)
         tv3 = findViewById(R.id.tv3)
@@ -86,8 +86,8 @@ class MainActivity : AppCompatActivity() {
         val emisorAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
             this, R.array.emitter, android.R.layout.simple_spinner_item)
         emisorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        emisorSpinner.adapter = emisorAdapter
-        emisorSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+        emitterSpinner.adapter = emisorAdapter
+        emitterSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                     makeToast(getString(R.string.valid_name))
                 } else {
                     currentEmisor = itemSelected
-                    nuevoButton.isEnabled=true
+                    newButton.isEnabled=true
                     tv1.setTextColor(resources.getColor(R.color.colorCorrect))
                 }
             }
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                     makeToast(getString(R.string.valid_name))
                 } else {
                     currentReceptor = itemSelected
-                    nuevoButton.isEnabled=true
+                    newButton.isEnabled=true
                     tv3.setTextColor(resources.getColor(R.color.colorCorrect))
                 }
             }
@@ -124,8 +124,8 @@ class MainActivity : AppCompatActivity() {
         val categoriaAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
             this, R.array.category, android.R.layout.simple_spinner_item)
         categoriaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categoriaSpinner.adapter = categoriaAdapter
-        categoriaSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+        categorySpinner.adapter = categoriaAdapter
+        categorySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) { }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 val itemSelected = parent!!.getItemAtPosition(pos).toString()
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
                     makeToast(getString(R.string.valid_category))
                 } else {
                     currentCategoria = itemSelected
-                    nuevoButton.isEnabled=true
+                    newButton.isEnabled=true
                     tv4.setTextColor(resources.getColor(R.color.colorCorrect))
                 }
             }
@@ -142,28 +142,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun initEditTexts() {
         // Monto Edit:
-        montoEdit.setOnClickListener {
-            val input: String = montoEdit.text.toString()
+        amountEdit.setOnClickListener {
+            val input: String = amountEdit.text.toString()
             if (input == "0" || input == ""){
                 makeToast(getString(R.string.valid_amount))
                 tv2.setTextColor(resources.getColor(R.color.colorError))
             }
             else {
                 currentMonto = input.toInt()
-                registrarButton.isEnabled=true
+                registerButton.isEnabled=true
                 tv2.setTextColor(resources.getColor(R.color.colorCorrect))
             }
         }
 
         // Motivo Edit:
-        motivoEdit.setOnClickListener {
-            val input = motivoEdit.text.toString()
+        detailEdit.setOnClickListener {
+            val input = detailEdit.text.toString()
             if (input==resources.getString(R.string.motive_default)){
                 makeToast(getString(R.string.valid_detail))
                 tv5.setTextColor(resources.getColor(R.color.colorError))
             } else{
                 currentMotivo = input
-                registrarButton.isEnabled=true
+                registerButton.isEnabled=true
                 tv5.setTextColor(resources.getColor(R.color.colorCorrect))
             }
         }
@@ -171,24 +171,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun initButtons() {
         // new register:
-        nuevoButton.setOnClickListener{ newRegisterClicked() }
+        newButton.setOnClickListener{ newRegisterClicked() }
 
         // Registrar:
-        registrarButton.setOnClickListener{ registerClicked() }
+        registerButton.setOnClickListener{ registerClicked() }
 
         // Sheets:
-        sheets_button.setOnClickListener{ goToSheets() }
+        sheetsButton.setOnClickListener{ goToSheets() }
     }
 
     private fun newRegisterClicked() {
-        emisorSpinner.setSelection(0)
-        montoEdit.setText("0")
+        emitterSpinner.setSelection(0)
+        amountEdit.setText("0")
         receptorSpinner.setSelection(0)
-        categoriaSpinner.setSelection(0)
-        motivoEdit.setText(resources.getString(R.string.motive_default))
+        categorySpinner.setSelection(0)
+        detailEdit.setText(resources.getString(R.string.motive_default))
         showAll()
         resetColors()
-        nuevoButton.isEnabled=false
+        newButton.isEnabled=false
     }
 
     private fun registerClicked() {
@@ -208,7 +208,7 @@ class MainActivity : AppCompatActivity() {
             // Single Register:
             submitRequest()
         }
-        registrarButton.isEnabled=false
+        registerButton.isEnabled=false
     }
 
     private fun submitRequest() {
@@ -258,13 +258,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideAll(){
-        emisorSpinner.visibility = View.INVISIBLE
-        montoEdit.visibility = View.INVISIBLE
+        emitterSpinner.visibility = View.INVISIBLE
+        amountEdit.visibility = View.INVISIBLE
         receptorSpinner.visibility = View.INVISIBLE
-        categoriaSpinner.visibility = View.INVISIBLE
-        motivoEdit.visibility = View.INVISIBLE
-        registrarButton.visibility = View.INVISIBLE
-        sheets_button.visibility = View.INVISIBLE
+        categorySpinner.visibility = View.INVISIBLE
+        detailEdit.visibility = View.INVISIBLE
+        registerButton.visibility = View.INVISIBLE
+        sheetsButton.visibility = View.INVISIBLE
         tv1.visibility = View.INVISIBLE
         tv2.visibility = View.INVISIBLE
         tv3.visibility = View.INVISIBLE
@@ -273,19 +273,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAll(){
-        emisorSpinner.visibility = View.VISIBLE
-        montoEdit.visibility = View.VISIBLE
+        emitterSpinner.visibility = View.VISIBLE
+        amountEdit.visibility = View.VISIBLE
         receptorSpinner.visibility = View.VISIBLE
-        categoriaSpinner.visibility = View.VISIBLE
-        motivoEdit.visibility = View.VISIBLE
-        registrarButton.visibility = View.VISIBLE
-        sheets_button.visibility = View.VISIBLE
+        categorySpinner.visibility = View.VISIBLE
+        detailEdit.visibility = View.VISIBLE
+        registerButton.visibility = View.VISIBLE
+        sheetsButton.visibility = View.VISIBLE
         tv1.visibility = View.VISIBLE
         tv2.visibility = View.VISIBLE
         tv3.visibility = View.VISIBLE
         tv4.visibility = View.VISIBLE
         tv5.visibility = View.VISIBLE
-        nuevoButton.text = getString(R.string.clean)
+        newButton.text = getString(R.string.clean)
     }
 
     private fun resetColors(){
