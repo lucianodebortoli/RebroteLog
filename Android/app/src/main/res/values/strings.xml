@@ -10,4 +10,13 @@
     <string name="missing_fields">Missing fields</string>
     <string name="registered_successfully">Registered successfully</string>
     <string name="clean">CLEAN</string>
+    <string name="iam">I am</string>
+    <string name="amount_currency">Amount ($)</string>
+    <string name="paid_to">I paid to</string>
+    <string name="category">Category</string>
+    <string name="detail">Detail</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="register">REGISTER</string>
+    <string name="begin_new_register">NEW ENTRY</string>
+    <string name="got_to_registers">GO TO REGISTER</string>
 </resources>
