@@ -15,7 +15,7 @@
 
     <string-array name="receptor">
         <item>Select</item>
-        <item>Todos</item>
+        <item>All</item>
         <item>Facundo</item>
         <item>Lautaro</item>
         <item>Luciano</item>
