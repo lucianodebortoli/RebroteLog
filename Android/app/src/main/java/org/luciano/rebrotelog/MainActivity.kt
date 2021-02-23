@@ -297,7 +297,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToSheets(){
-        val url = "https://docs.google.com/spreadsheets/d/1u8hsgUbM8guJzTgguBTd5NeYh-m_1MNTzEzJUTICcBk/edit#gid=1041806097"
+        val url = ""
         intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)
     }
